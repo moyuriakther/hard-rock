@@ -1,4 +1,5 @@
 const searchSongs = async() =>{
+    loadingSpinner();
     const searchText = document.getElementById('searchInput').value;
     const url = `https://api.lyrics.ovh/suggest/${searchText}`;
     const res = await fetch(url);
@@ -23,9 +24,24 @@ const displaySongs = (songs) =>{
         </div>
         `;
         songsDiv.appendChild(songDiv);
+        loadingSpinner();
     });
 }
+
+var searchInput = document.getElementById("searchInput");
+// Execute a function when the user releases a key on the keyboard
+searchInput.addEventListener("keyup", function(event) {
+  if (event.key === 'Enter') {
+    // Cancel the default action, if needed
+    // event.preventDefault();
+    // Trigger the button element with a click
+    document.getElementById("searchButton").click();
+  }
+});
+
+
 const displayLyrics = (artist, title) =>{
+    loadingSpinner();
     const url = `https://api.lyrics.ovh/v1/${artist}/${title}`;
     fetch(url)
     .then(response => response.json())
@@ -34,4 +50,11 @@ const displayLyrics = (artist, title) =>{
 const showLyrics = (data) =>{
     const lyricsDiv = document.getElementById('lyrics');
     lyricsDiv.innerText = data.lyrics;
+    loadingSpinner();
+}
+const loadingSpinner = () =>{
+    const spinner = document.getElementById('loading-spinner');
+    const songsContainer = document.getElementById('songsDiv');
+    spinner.classList.toggle('d-none');
+    songsContainer.classList.toggle('d-none');
 }
